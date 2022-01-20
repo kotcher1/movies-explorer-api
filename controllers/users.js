@@ -1,17 +1,22 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { CURRENT_JWT_SECRET } = require('../configs/index');
 const Users = require('../models/users');
 const NotFoundError = require('../errors/not-found-error');
 const BadRequestError = require('../errors/not-found-error');
 const ConflictError = require('../errors/conflict-error');
 const AuthError = require('../errors/auth-error');
-
-const { NODE_ENV, JWT_SECRET } = process.env;
+const {
+  USER_ID_NOT_FOUND,
+  USER_EMAIL_NOT_VALID,
+  DATA_NOT_VALID,
+  WRONG_EMAIL_OR_PASSWORD,
+} = require('../configs/messages-constants');
 
 module.exports.getUser = (req, res, next) => {
   Users.findById(req.user._id)
     .orFail(() => {
-      throw new NotFoundError('Пользователь по указанному id не найден');
+      throw new NotFoundError(USER_ID_NOT_FOUND);
     })
     .then((user) => res.send({ data: user }))
     .catch(next);
@@ -35,10 +40,10 @@ module.exports.createUser = (req, res, next) => {
     }))
     .catch((err) => {
       if (err.code === 11000) {
-        return next(new ConflictError('Пользователь с данным email уже существует'));
+        return next(new ConflictError(USER_EMAIL_NOT_VALID));
       }
       if (err.name === 'ValidationError') {
-        return next(new BadRequestError('Произошла ошибка валидации'));
+        return next(new BadRequestError(DATA_NOT_VALID));
       }
       return next(err);
     });
@@ -52,15 +57,18 @@ module.exports.updateUserInfo = (req, res, next) => {
     runValidators: true,
   })
     .orFail(() => {
-      throw new NotFoundError('Пользователь по указанному id не найден');
+      throw new NotFoundError(USER_ID_NOT_FOUND);
     })
     .then((user) => res.send({ data: user }))
     .catch((err) => {
+      if (err.code === 11000) {
+        return next(new ConflictError(USER_EMAIL_NOT_VALID));
+      }
       if (err.name === 'ValidationError') {
-        return next(new BadRequestError('Переданы некорректные данные при обновлении профиля.'));
+        return next(new BadRequestError(DATA_NOT_VALID));
       }
       if (err.name === 'CastError') {
-        return next(new BadRequestError('Пользователь по указанному id не найден'));
+        return next(new BadRequestError(USER_ID_NOT_FOUND));
       }
       return next(err);
     });
@@ -74,12 +82,12 @@ module.exports.login = (req, res, next) => {
       res.send({
         jwt: jwt.sign({
           _id: user._id,
-        }, NODE_ENV === 'production' ? JWT_SECRET : 'some-secret-key', {
+        }, CURRENT_JWT_SECRET, {
           expiresIn: '7d',
         }),
       });
     })
     .catch(() => {
-      next(new AuthError('Проверьте логин и пароль'));
+      next(new AuthError(WRONG_EMAIL_OR_PASSWORD));
     });
 };
