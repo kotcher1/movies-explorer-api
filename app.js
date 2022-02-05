@@ -15,6 +15,8 @@ const app = express();
 
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
+app.use(requestLogger);
+
 app.use(limiter);
 
 app.use((req, res, next) => {
@@ -41,8 +43,6 @@ app.use(helmet());
 mongoose.connect(CURRENT_DATABASE, {
   useNewUrlParser: true,
 });
-
-app.use(requestLogger);
 
 app.get('/crash-test', () => {
   setTimeout(() => {
