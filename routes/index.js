@@ -11,9 +11,9 @@ router.post('/signup', signupValidator, createUser);
 
 router.use('/', auth);
 
-router.use('/users', auth, require('./users'));
+router.use('', auth, require('./users'));
 
-router.use('/movies', auth, require('./movies'));
+router.use('', auth, require('./movies'));
 
 router.use(() => {
   throw new NotFoundError(PAGE_NOT_FOUND);
