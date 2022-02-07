@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { CURRENT_JWT_SECRET } = require('../configs/index');
+const { CURRENT_JWT } = require('../configs/index');
 const Users = require('../models/users');
 const NotFoundError = require('../errors/not-found-error');
 const BadRequestError = require('../errors/not-found-error');
@@ -82,7 +82,7 @@ module.exports.login = (req, res, next) => {
       res.send({
         jwt: jwt.sign({
           _id: user._id,
-        }, CURRENT_JWT_SECRET, {
+        }, CURRENT_JWT, {
           expiresIn: '7d',
         }),
       });
