@@ -1,0 +1,15 @@
+module.exports = {
+  INVALID_EMAIL_FORMAT: 'Неверный формат email',
+  INVALID_LINK_FORMAT: 'Неверный формат ссылки',
+  SERVER_ERROR_MESSAGE: 'На сервере произошла ошибка',
+  PAGE_NOT_FOUND: 'Страница не найдена',
+  DATA_NOT_VALID_TO_CREATE_MOVIE: 'Переданы некорректные данные при создании фильма',
+  MOVIE_ID_NOT_FOUND: 'Фильм с указанным _id не найден',
+  NO_RIGHT_TO_DELETE_MOVIE: 'Нельзя удалить фильм другого пользователя',
+  USER_ID_NOT_FOUND: 'Пользователь по указанному _id не найден',
+  USER_EMAIL_NOT_VALID: 'Пользователь с данным email уже существует',
+  DATA_NOT_VALID: 'Произошла ошибка валидации',
+  WRONG_EMAIL_OR_PASSWORD: 'Проверьте логин и пароль',
+  AUTHORIZATION_ERROR: 'Ошибка авторизации',
+  SERVER_CRASH: 'Сервер сейчас упадёт',
+};
