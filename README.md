@@ -1,6 +1,6 @@
 # Movies-Explorer-Api
 
-Бэкенд часть проекта (https://github.com/kotcher1/movies-explorer-frontend)[Movies-Explorer]
+Бэкенд часть проекта [Movies-Explorer](https://github.com/kotcher1/movies-explorer-frontend)
 
 Технологии: express.js, mongoDB, Next.js
 
